@@ -5,6 +5,7 @@ import Experience from '@/components/Experience'
 import Error from '@/components/Error'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
+import Naruto from '@/components/projects/Naruto'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ export default new Router({
       path: '/user/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/project/naruto',
+      name: 'naruto',
+      component: Naruto
     },
     {
       path: '*',

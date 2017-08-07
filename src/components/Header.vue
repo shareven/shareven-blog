@@ -30,7 +30,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li>
-                  <a href="#">项目一</a>
+                  <router-link to="/project/naruto">火影-究极风暴v1.1</router-link>
                 </li>
                 <li>
                   <a href="#">项目二</a>
