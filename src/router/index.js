@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import Experience from '@/components/Experience'
+import LeaveMsg from '@/components/LeaveMsg'
 import Error from '@/components/Error'
 import Register from '@/components/Register'
 import Login from '@/components/Login'
@@ -45,6 +46,11 @@ export default new Router({
       path: '/experience',
       name: 'Experience',
       component: Experience
+    },
+    {
+      path: '/user/leaveMsg',
+      name: 'leaveMsg',
+      component: LeaveMsg
     }
   ]
 })

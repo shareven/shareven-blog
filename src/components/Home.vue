@@ -1,4 +1,5 @@
 <template>
+  
   <div class="home">
     <div class="container">
       <div class="box">
@@ -12,7 +13,6 @@
         <div class="inner8 in"></div>
       </div>
     </div>
-    
   </div>
 </template>
  
@@ -38,6 +38,7 @@ export default {
     background: red url("../assets/img/1.jpg") center center;
   }
 }
+
 @media screen and (min-width: 992px) {
   html {
     font-size: 62.5%;

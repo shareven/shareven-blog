@@ -13,8 +13,8 @@
 </template>
 
 <style lang="less" scoped>
-.login-wrap,
 .register-wrap {
+    height: 450px;
     text-align: center;
 }
 
@@ -97,7 +97,8 @@ export default {
                 this.tishi = "两次输入的密码不一样";
             } else {
                 let data = { 'username': this.newUsername, 'password':this.newPassword }
-                $.post('http://localhost/vueapi/register.php', data, (res)=>{
+                $.post('/vueapi/register.php', data, (res)=>{
+                // $.post('http://localhost/vueapi/register.php', data, (res)=>{
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常"
