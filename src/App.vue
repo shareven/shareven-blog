@@ -34,6 +34,9 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
+.main{
+  min-height: 400px;
+}
 
 //特效
 .fade-enter {

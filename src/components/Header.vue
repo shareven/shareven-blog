@@ -15,7 +15,7 @@
           </div>
   
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <div class="collapse navbar-collapse text-left" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav col-md-4">
               <li class="active">
                 <router-link to="/home">首页
@@ -42,13 +42,13 @@
                 </ul>
               </li>
             </ul>
-            <form class="navbar-form navbar-left col-md-3">
-              <div class="form-group">
+            <form class="navbar-form navbar-left col-md-3 clearfix">
+              <div class="form-group col-md-10 col-xs-6">
                 <input type="text" class="form-control" placeholder="Search">
               </div>
-              <button type="submit" class="btn btn-default">搜索</button>
+              <button type="submit" class="btn btn-default col-md-2 col-xs-2">搜索</button>
             </form>
-            <ul class="nav navbar-nav navbar-right col-md-3">
+            <ul class="nav navbar-nav navbar-right col-md-2">
               <li>
                 <router-link to="/user/leaveMsg">留言</router-link>
               </li>
@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isShowUser', 'userName']),
+    ...mapState(['isShowUser', 'userName','lastPath']),
   },
   mounted() {
     /*页面挂载获取保存的cookie值，渲染到页面上*/
@@ -101,6 +101,9 @@ export default {
   },
   updated() {
     this.showUserInfo();
+  },
+  beforeRouteEnter (to, from, next){
+    alert(this.name);
   },
   methods: {
     ...mapMutations([
@@ -115,6 +118,8 @@ export default {
     showUserInfo() {
       let uname = getCookie('username')
       this.name = uname;
+      //把用户名存到store
+      this.$store.commit('changeUsername',uname);
       /*如果cookie不存在，则跳转到登录页*/
       if (uname == "") {
         this.falseShowUser();

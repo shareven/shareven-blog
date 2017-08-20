@@ -2,11 +2,11 @@
     <div>
         <div class="register-wrap">
             <h3>注册</h3>
-            <p v-show="showTishi">{{tishi}}</p>
             <input type="text" placeholder="请输入用户名" v-model="newUsername">
             <input type="password" placeholder="请输入密码" v-model="newPassword">
             <input type="password" placeholder="请再次输入密码" v-model="reNewPassword">
             <button v-on:click="register">注册</button>
+            <p v-show="showTishi">{{tishi}}</p>
             <router-link to="/user/login">已有账号？马上登录</router-link>
         </div>
     </div>
@@ -97,8 +97,8 @@ export default {
                 this.tishi = "两次输入的密码不一样";
             } else {
                 let data = { 'username': this.newUsername, 'password':this.newPassword }
-                $.post('/vueapi/register.php', data, (res)=>{
-                // $.post('http://localhost/vueapi/register.php', data, (res)=>{
+                // $.post('/vueapi/register.php', data, (res)=>{
+                $.post('http://localhost/vueapi/register.php', data, (res)=>{
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常"
@@ -122,7 +122,7 @@ export default {
                         this.trueShowUser();
                         // 页面跳转
                         setTimeout(function () {
-                            this.$router.push('/')
+                            this.$router.push('/user/leaveMsg')
                         }.bind(this), 1000)
                     }
                 })

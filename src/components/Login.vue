@@ -2,10 +2,10 @@
     <div>
         <div class="login-wrap">
             <h3>登录</h3>
-            <p v-show="showTishi">{{tishi}}</p>
             <input type="text" placeholder="请输入用户名" v-model="username">
             <input type="password" placeholder="请输入密码" v-model="password">
             <button v-on:click="login">登录</button>
+            <p v-show="showTishi">{{tishi}}</p>
             <router-link to="/user/register">没有账号？马上注册</router-link>
         </div>
     </div>
@@ -94,8 +94,8 @@ export default {
             } else {
                 let data = { 'username': this.username, 'password': this.password }
                 /*接口请求*/
-                $.post('/vueapi/login.php', data, (res)=>{
-                // $.post('http://localhost/vueapi/login.php', data, (res)=>{
+                // $.post('/vueapi/login.php', data, (res)=>{
+                $.post('http://localhost/vueapi/login.php', data, (res)=>{
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常";
@@ -118,7 +118,7 @@ export default {
                         this.trueShowUser();
                         //页面跳转
                         setTimeout(function () {
-                            this.$router.push('/')
+                            this.$router.push('/user/leaveMsg');
                         }.bind(this), 1000)
                     }
                 })
