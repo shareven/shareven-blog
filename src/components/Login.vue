@@ -12,7 +12,7 @@
 </template>
 
 <style lang="less" scoped>
-.login-wrap{
+.login-wrap {
     height: 450px;
     text-align: center;
 }
@@ -91,11 +91,12 @@ export default {
         login() {
             if (this.username == "" || this.password == "") {
                 this.tishi = "请输入用户名或密码";
+                this.showTishi = true;
             } else {
                 let data = { 'username': this.username, 'password': this.password }
                 /*接口请求*/
-                $.post('/vueapi/login.php', data, (res)=>{
-                // $.post('http://localhost/vueapi/login.php', data, (res)=>{
+                // $.post('/vueapi/login.php', data, (res) => {
+                $.post('http://localhost/vueapi/login.php', data, (res)=>{
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常";

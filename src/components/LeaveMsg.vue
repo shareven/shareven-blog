@@ -38,23 +38,23 @@
 
     <!-- 展示留言 -->
     <section class="container content text-left">
-    <transition-group name="myslide2"  tag="div">
-      <div class="panel panel-default" :key="index" v-for="(item,index) in leavemsgData">
-        <div class="panel-heading">
-          <i class="glyphicon glyphicon-user"></i>
-          <strong>{{item.username}}</strong>
-        </div>
-        <div class="panel-body">
-          <div class="content-msg">{{item.message}}</div>
-          <div class="star row ">
-            <span class="text-time">发布于{{item.date}}</span>
-            <span>点赞</span>
-            <i class="glyphicon glyphicon-thumbs-up"></i>
-            <span>{{item.stars}}</span>
+      <transition-group name="myslide2" tag="div">
+        <div class="panel panel-default" :key="index" v-for="(item,index) in leavemsgData">
+          <div class="panel-heading">
+            <i class="glyphicon glyphicon-user"></i>
+            <strong>{{item.username}}</strong>
+          </div>
+          <div class="panel-body">
+            <div class="content-msg">{{item.message}}</div>
+            <div class="star row ">
+              <span class="text-time">发布于{{item.date}}</span>
+              <span>点赞</span>
+              <i class="glyphicon glyphicon-thumbs-up" @click="giveStar(item.lid,item.stars)"></i>
+              <span>{{item.stars}}</span>
+            </div>
           </div>
         </div>
-      </div>
-    </transition-group>
+      </transition-group>
     </section>
   </div>
 </template>
@@ -86,6 +86,23 @@ export default {
 
       this.btnMsg = this.btnMsg == "我想写留言" ? "我不想写了" : "我想写留言";
     },
+    giveStar(lid,stars) {
+      //点赞
+      let mystars=stars+1;
+      let data = {'lid':lid ,'stars':mystars};
+      /*接口请求*/
+      // $.post('/vueapi/giveStar.php', data, (res) => {
+        $.post('http://localhost/vueapi/giveStar.php', data, (res) => {
+        res = JSON.parse(res);
+        if (res.code == -2) {
+          console.log("网络连接异常") ;
+        } else if (res.code == 0) {
+          console.log("点赞失败，请重试") ;
+        } else if (res.code == 1) {
+          this.getLeaveMsgData();
+        }
+      })
+    },
     noShowTishi() {
       this.showTishi = false;
     },
@@ -99,8 +116,8 @@ export default {
 
         let data = { 'username': this.userName, 'message': this.message, 'date': mydate };
         /*接口请求*/
-        $.post('/vueapi/leaveMsg.php', data, (res)=>{
-        // $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
+        // $.post('/vueapi/leaveMsg.php', data, (res) => {
+          $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
           res = JSON.parse(res);
           if (res.code == -2) {
             this.tishi = "网络连接异常";
@@ -111,17 +128,17 @@ export default {
           } else if (res.code == 1) {
             this.getLeaveMsgData();
             this.tishi = "";
-              this.message = "";
-              this.writeMsg();
+            this.message = "";
+            this.writeMsg();
           }
         })
       }
     },
     getLeaveMsgData() {
       /*接口请求*/
-      $.get('/vueapi/showLeaveMsg.php', (res)=>{
-      // $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
-        // res = JSON.parse(res);
+      // $.get('/vueapi/showLeaveMsg.php', (res) => {
+        $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
+        res = JSON.parse(res);
         if (res.code == -2) {
           console.log("网络连接异常");
           this.showTishi = true;
@@ -131,7 +148,7 @@ export default {
         } else if (res.code == 1) {
           //储存获取的留言数据
           this.leavemsgData = res.data.reverse();
-          
+
         }
       })
     }
@@ -181,27 +198,34 @@ i.glyphicon-thumbs-up {
   color: red;
 }
 
-textarea {
+textarea#lvmsg {
   height: 200px;
   resize: none;
 }
 
 // 特效start
-.myslide-enter-active,.myslide-leave-active{
+.myslide-enter-active,
+.myslide-leave-active {
   transition: all 1s;
 }
-.myslide-enter, .myslide-leave-to{
+
+.myslide-enter,
+.myslide-leave-to {
   opacity: 0;
   transform: translateY(-40px);
 }
 
 
-.myslide2-enter-active,.myslide2-leave-active{
+.myslide2-enter-active,
+.myslide2-leave-active {
   transition: all 1s;
 }
-.myslide2-enter, .myslide2-leave-to{
+
+.myslide2-enter,
+.myslide2-leave-to {
   opacity: 0;
   transform: translateX(-80px);
 }
+
 // 特效end
 </style>

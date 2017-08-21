@@ -93,12 +93,14 @@ export default {
         register() {
             if (this.newUsername == "" || this.newPassword == "") {
                 this.tishi = "请输入用户名或密码";
+                this.showTishi = true;
             } else if (this.newPassword !== this.reNewPassword) {
                 this.tishi = "两次输入的密码不一样";
+                this.showTishi = true;
             } else {
                 let data = { 'username': this.newUsername, 'password':this.newPassword }
-                // $.post('/vueapi/register.php', data, (res)=>{
-                $.post('http://localhost/vueapi/register.php', data, (res)=>{
+                $.post('/vueapi/register.php', data, (res)=>{
+                // $.post('http://localhost/vueapi/register.php', data, (res)=>{
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常"
@@ -125,7 +127,7 @@ export default {
                             this.$router.push('/user/leaveMsg')
                         }.bind(this), 1000)
                     }
-                },'application/json;charset=UTF-8')
+                })
                     
             }
         }
