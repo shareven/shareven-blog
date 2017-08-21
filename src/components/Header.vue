@@ -15,8 +15,8 @@
           </div>
   
           <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse text-left" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav col-md-4">
+          <div class="collapse navbar-collapse text-left " id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav col-md-4 col-sm-4">
               <li class="active">
                 <router-link to="/home">首页
                 </router-link>
@@ -42,13 +42,13 @@
                 </ul>
               </li>
             </ul>
-            <form class="navbar-form navbar-left col-md-3 clearfix">
-              <div class="form-group col-md-10 col-xs-6">
+            <form class="navbar-form navbar-left col-md-3 col-sm-2 clearfix">
+              <div class="form-group col-md-10 col-xs-10">
                 <input type="text" class="form-control" placeholder="Search">
               </div>
               <button type="submit" class="btn btn-default col-md-2 col-xs-2">搜索</button>
             </form>
-            <ul class="nav navbar-nav navbar-right col-md-2">
+            <ul class="nav navbar-nav navbar-left col-md-2 col-sm-3">
               <li>
                 <router-link to="/user/leaveMsg">留言</router-link>
               </li>

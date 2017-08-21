@@ -99,8 +99,8 @@ export default {
 
         let data = { 'username': this.userName, 'message': this.message, 'date': mydate };
         /*接口请求*/
-        // $.post('/vueapi/leaveMsg.php', data, (res)=>{
-        $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
+        $.post('/vueapi/leaveMsg.php', data, (res)=>{
+        // $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
           res = JSON.parse(res);
           if (res.code == -2) {
             this.tishi = "网络连接异常";
@@ -119,9 +119,9 @@ export default {
     },
     getLeaveMsgData() {
       /*接口请求*/
-      // $.get('/vueapi/leaveMsgshowLeaveMsg.php', (res)=>{
-      $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
-        res = JSON.parse(res);
+      $.get('/vueapi/showLeaveMsg.php', (res)=>{
+      // $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
+        // res = JSON.parse(res);
         if (res.code == -2) {
           console.log("网络连接异常");
           this.showTishi = true;
@@ -131,6 +131,7 @@ export default {
         } else if (res.code == 1) {
           //储存获取的留言数据
           this.leavemsgData = res.data.reverse();
+          
         }
       })
     }

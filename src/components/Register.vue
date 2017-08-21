@@ -125,11 +125,8 @@ export default {
                             this.$router.push('/user/leaveMsg')
                         }.bind(this), 1000)
                     }
-                })
-                    .catch(err => {
-                        this.tishi = "网络连接异常";
-                        this.showTishi = true;
-                    })
+                },'application/json;charset=UTF-8')
+                    
             }
         }
     }
