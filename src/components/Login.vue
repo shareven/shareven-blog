@@ -2,7 +2,7 @@
     <div>
         <div class="login-wrap">
             <h3>登录</h3>
-            <input type="text" placeholder="请输入用户名" v-model="username">
+            <input type="text" v-focus placeholder="请输入用户名" v-model="username">
             <input type="password" placeholder="请输入密码" v-model="password">
             <button v-on:click="login">登录</button>
             <p v-show="showTishi">{{tishi}}</p>
@@ -78,9 +78,10 @@ export default {
     },
     store,
     mounted() {
-        /*页面挂载获取cookie，如果存在username的cookie，则跳转到主页，不需登录*/
+        /*页面挂载获取cookie，如果存在username的cookie，则跳转到上一页面，不需登录*/
         if (getCookie('username')) {
-            this.$router.push('/')
+            // this.$router.push('/user/leaveMsg');
+            this.$router.go(-1);
         }
     },
     methods: {
@@ -96,7 +97,7 @@ export default {
                 let data = { 'username': this.username, 'password': this.password }
                 /*接口请求*/
                 // $.post('/vueapi/login.php', data, (res) => {
-                $.post('http://localhost/vueapi/login.php', data, (res)=>{
+                $.post('http://localhost/vueapi/login.php', data, (res) => {
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常";
@@ -119,7 +120,8 @@ export default {
                         this.trueShowUser();
                         //页面跳转
                         setTimeout(function () {
-                            this.$router.push('/user/leaveMsg');
+                            // this.$router.push('/user/leaveMsg');
+                            this.$router.go(-1);
                         }.bind(this), 1000)
                     }
                 })

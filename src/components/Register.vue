@@ -2,7 +2,7 @@
     <div>
         <div class="register-wrap">
             <h3>注册</h3>
-            <input type="text" placeholder="请输入用户名" v-model="newUsername">
+            <input type="text" v-focus placeholder="请输入用户名" v-model="newUsername">
             <input type="password" placeholder="请输入密码" v-model="newPassword">
             <input type="password" placeholder="请再次输入密码" v-model="reNewPassword">
             <button v-on:click="register">注册</button>
@@ -64,7 +64,7 @@ span:hover {
 <script>
 import store from '@/vuex/store'
 import { mapState, mapMutations } from 'vuex'
-import { setCookie, getCookie, delCookie} from '../assets/js/cookies.js'
+import { setCookie, getCookie, delCookie } from '../assets/js/cookies.js'
 export default {
     data() {
         return {
@@ -80,9 +80,10 @@ export default {
     },
     store,
     mounted() {
-        /*页面挂载获取cookie，如果存在username的cookie，则跳转到主页，不需登录*/
+        /*页面挂载获取cookie，如果存在username的cookie，则跳转到上一页面，不需登录*/
         if (getCookie('username')) {
-            this.$router.push('/')
+            // this.$router.push('/user/leaveMsg');
+            this.$router.go(-1);
         }
     },
     methods: {
@@ -98,9 +99,9 @@ export default {
                 this.tishi = "两次输入的密码不一样";
                 this.showTishi = true;
             } else {
-                let data = { 'username': this.newUsername, 'password':this.newPassword }
-                $.post('/vueapi/register.php', data, (res)=>{
-                // $.post('http://localhost/vueapi/register.php', data, (res)=>{
+                let data = { 'username': this.newUsername, 'password': this.newPassword }
+                // $.post('/vueapi/register.php', data, (res)=>{
+                $.post('http://localhost/vueapi/register.php', data, (res) => {
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常"
@@ -123,12 +124,13 @@ export default {
                         //导航条显示登录用户信息
                         this.trueShowUser();
                         // 页面跳转
-                        setTimeout(function () {
-                            this.$router.push('/user/leaveMsg')
+                        setTimeout(function() {
+                            // this.$router.push('/user/leaveMsg');
+                            this.$router.go(-1);
                         }.bind(this), 1000)
                     }
                 })
-                    
+
             }
         }
     }

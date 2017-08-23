@@ -15,8 +15,16 @@
 <script>
 import headerTop from '@/components/Header'
 import tempFooter from '@/components/Footer'
+
 export default {
   name: 'app',
+  directives: {
+    focus: {
+      inserted: function(el) {
+        el.focus()
+      }
+    }
+  },
   components: {
     headerTop,
     tempFooter
@@ -34,7 +42,8 @@ export default {
   text-align: center;
   color: #2c3e50;
 }
-.main{
+
+.main {
   min-height: 400px;
 }
 

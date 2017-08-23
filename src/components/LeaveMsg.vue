@@ -14,7 +14,7 @@
               <div class="form-group">
                 <label for="#lvmsg" class="col-md-2 col-md-12"></label>
                 <div class="div col-xs-12 col-md-12">
-                  <textarea name="" id="lvmsg" v-model="message" @focus="noShowTishi" class="form-control" placeholder="太喜欢你的留言了，快来留下点什么吧"></textarea>
+                  <div contenteditable="true" v-focus id="lvmsg" class="form-control text-left" @focus="noShowTishi" placeholder="太喜欢你的留言了，快来留下点什么吧"></div>
                 </div>
               </div class="form-group">
               <div class="form-group">
@@ -35,7 +35,6 @@
       </div>
       <!-- 写留言end -->
     </transition>
-
     <!-- 展示留言 -->
     <section class="container content text-left">
       <transition-group name="myslide2" tag="div">
@@ -45,11 +44,11 @@
             <strong>{{item.username}}</strong>
           </div>
           <div class="panel-body">
-            <div class="content-msg">{{item.message}}</div>
+            <div class="content-msg" v-html="item.message"></div>
             <div class="star row ">
               <span class="text-time">发布于{{item.date}}</span>
               <span>点赞</span>
-              <i class="glyphicon glyphicon-thumbs-up" @click="giveStar(item.lid,item.stars)"></i>
+              <i class="glyphicon glyphicon-thumbs-up" @click="giveStar(item.lid,index)"></i>
               <span>{{item.stars}}</span>
             </div>
           </div>
@@ -67,7 +66,6 @@ export default {
   data() {
     return {
       leavemsgData: [],
-      message: '',
       showWriteMsg: false,
       showTishi: false,
       tishi: '',
@@ -83,23 +81,21 @@ export default {
   methods: {
     writeMsg() {
       this.showWriteMsg = !this.showWriteMsg;
-
       this.btnMsg = this.btnMsg == "我想写留言" ? "我不想写了" : "我想写留言";
     },
-    giveStar(lid,stars) {
+    giveStar(lid, index) {
       //点赞
-      let mystars=stars+1;
-      let data = {'lid':lid ,'stars':mystars};
+      let data = { 'lid': lid };
       /*接口请求*/
       // $.post('/vueapi/giveStar.php', data, (res) => {
         $.post('http://localhost/vueapi/giveStar.php', data, (res) => {
         res = JSON.parse(res);
         if (res.code == -2) {
-          console.log("网络连接异常") ;
+          console.log("网络连接异常");
         } else if (res.code == 0) {
-          console.log("点赞失败，请重试") ;
+          console.log("点赞失败，请重试");
         } else if (res.code == 1) {
-          this.getLeaveMsgData();
+          this.leavemsgData[index].stars = res.stars;
         }
       })
     },
@@ -107,28 +103,29 @@ export default {
       this.showTishi = false;
     },
     sendMsg() {
-      if (this.message == "") {
+      let message = $('#lvmsg').html();
+      if (message == "") {
         this.showTishi = true;
         this.tishi = "请恕在下才疏学浅，不懂无字天书!";
       } else {
         let date = new Date();
         let mydate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-        let data = { 'username': this.userName, 'message': this.message, 'date': mydate };
+        let data = { 'username': this.userName, 'message': message, 'date': mydate };
         /*接口请求*/
         // $.post('/vueapi/leaveMsg.php', data, (res) => {
           $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
           res = JSON.parse(res);
           if (res.code == -2) {
-            this.tishi = "网络连接异常";
+            this.tishi = res.mesg;
             this.showTishi = true;
           } else if (res.code == 0) {
-            this.tishi = "留言失败，请重试";
+            this.tishi = res.mesg;
             this.showTishi = true;
           } else if (res.code == 1) {
             this.getLeaveMsgData();
             this.tishi = "";
-            this.message = "";
+            $('#lvmsg').html("");
             this.writeMsg();
           }
         })
@@ -138,13 +135,13 @@ export default {
       /*接口请求*/
       // $.get('/vueapi/showLeaveMsg.php', (res) => {
         $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
+
+        // localhost下不能用JSON.parse转化json数组
         res = JSON.parse(res);
         if (res.code == -2) {
           console.log("网络连接异常");
-          this.showTishi = true;
         } else if (res.code == 0) {
           console.log("获取失败，请重试");
-          this.showTishi = true;
         } else if (res.code == 1) {
           //储存获取的留言数据
           this.leavemsgData = res.data.reverse();
@@ -197,10 +194,8 @@ i.glyphicon-thumbs-up {
 .showTishi {
   color: red;
 }
-
-textarea#lvmsg {
-  height: 200px;
-  resize: none;
+#lvmsg{
+  min-height: 150px;
 }
 
 // 特效start

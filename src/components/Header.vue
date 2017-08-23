@@ -13,7 +13,7 @@
             </button>
             <div class="navbar-brand big">shareven</div>
           </div>
-  
+
           <!-- Collect the nav links, forms, and other content for toggling -->
           <div class="collapse navbar-collapse text-left " id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav col-md-4 col-sm-4">
@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isShowUser', 'userName','lastPath']),
+    ...mapState(['isShowUser', 'userName', 'lastPath']),
   },
   mounted() {
     /*页面挂载获取保存的cookie值，渲染到页面上*/
@@ -101,9 +101,6 @@ export default {
   },
   updated() {
     this.showUserInfo();
-  },
-  beforeRouteEnter (to, from, next){
-    alert(this.name);
   },
   methods: {
     ...mapMutations([
@@ -119,7 +116,7 @@ export default {
       let uname = getCookie('username')
       this.name = uname;
       //把用户名存到store
-      this.$store.commit('changeUsername',uname);
+      this.$store.commit('changeUsername', uname);
       /*如果cookie不存在，则跳转到登录页*/
       if (uname == "") {
         this.falseShowUser();
@@ -128,10 +125,15 @@ export default {
       }
     },
     addActiveClass() {
+      //点击导航后触发事件
       $("li a").click(function () {
         $("li.active").removeClass("active");
         $(this).parent().addClass("active");
-      })
+        
+      }).not('.dropdown-toggle').click(function(){
+        //点击导航项目后，导航栏自动收起
+        $('.collapse').collapse('hide');
+      });
     }
   },
   store
@@ -140,5 +142,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
-
+#bs-example-navbar-collapse-1{
+    max-height: 500px;
+}
 </style>
