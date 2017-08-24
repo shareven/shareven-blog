@@ -1,35 +1,35 @@
 <template>
   <div class="experience">
     <!-- <div class="container">
-                      <div id="banner" class="carousel slide col-md-4 col-md-offset-4" data-ride="carousel">
-                        <ol class="carousel-indicators">
-                          <li data-target="#banner" data-slide-to="1" class="active"></li>
-                          <li data-target="#banner" data-slide-to="2"></li>
-                          <li data-target="#banner" data-slide-to="3"></li>
-                          <li data-target="#banner" data-slide-to="4"></li>
-                          <li data-target="#banner" data-slide-to="5"></li>
-                          <li data-target="#banner" data-slide-to="6"></li>
-                        </ol>
+                            <div id="banner" class="carousel slide col-md-4 col-md-offset-4" data-ride="carousel">
+                              <ol class="carousel-indicators">
+                                <li data-target="#banner" data-slide-to="1" class="active"></li>
+                                <li data-target="#banner" data-slide-to="2"></li>
+                                <li data-target="#banner" data-slide-to="3"></li>
+                                <li data-target="#banner" data-slide-to="4"></li>
+                                <li data-target="#banner" data-slide-to="5"></li>
+                                <li data-target="#banner" data-slide-to="6"></li>
+                              </ol>
 
-                        <div class="carousel-inner" role="listbox">
-                          <div class="item active">
-                            <img src="static/img/1.jpg" class="img-responsive">
-                          </div>
-                          <div class="item" v-for="(i,index) in imgUrl">
-                            <img :src="i">
-                          </div>
-                        </div>
+                              <div class="carousel-inner" role="listbox">
+                                <div class="item active">
+                                  <img src="static/img/1.jpg" class="img-responsive">
+                                </div>
+                                <div class="item" v-for="(i,index) in imgUrl">
+                                  <img :src="i">
+                                </div>
+                              </div>
 
-                        <a class="left carousel-control" href="#banner" role="button" data-slide="prev">
-                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                        </a>
-                        <a class="right carousel-control" href="#banner" role="button" data-slide="next">
-                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                        </a>
-                      </div>
-                    </div> -->
+                              <a class="left carousel-control" href="#banner" role="button" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                <span class="sr-only">Previous</span>
+                              </a>
+                              <a class="right carousel-control" href="#banner" role="button" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                <span class="sr-only">Next</span>
+                              </a>
+                            </div>
+                          </div> -->
 
     <section class="shareExperience">
       <header class="header">
@@ -60,7 +60,7 @@
               </div>
             </form>
           </div>
-          <!-- 未登录不可以留言 -->
+          <!-- 未登录不可以分享经验 -->
           <div class="container" v-show="!isShowUser">
             <h2>请先登录</h2>
             <section class="row">
@@ -72,20 +72,19 @@
       </transition>
     </section>
 
-    <!-- 展示留言 -->
+    <!-- 展示分享经验 -->
     <section class="container exp-content text-left">
       <transition-group name="myslide2" tag="div">
         <div class="panel panel-default" :key="index" v-for="(item,index) in experienceData">
-          <div class="panel-heading">
-            <i class="glyphicon glyphicon-user"></i>
-            <strong>{{item.username}}</strong>
-          </div>
+          
           <div class="panel-body">
-            <div class="content-msg" v-html="item.content"></div>
+            <router-link :to="{name:'experienceDetail',params:{id:index}}" class="content-title">{{item.title}}</router-link>
             <div class="star row">
+              <i class="glyphicon glyphicon-user"></i>
+              <strong>{{item.username}}</strong>
               <span class="text-time">发布于{{item.date}}</span>
               <span>点赞</span>
-              <i class="glyphicon glyphicon-thumbs-up" @click="giveStar(item.eid,index)"></i>
+              <i class="glyphicon glyphicon-thumbs-up" @click="ExpGiveStar(item.eid,index)"></i>
               <span>{{item.stars}}</span>
             </div>
           </div>
@@ -104,16 +103,14 @@ export default {
     return {
       text: "",
       myTitle: '',
-      isShowWrite:false,  //是否显示写分享
+      isShowWrite: false,  //是否显示写分享
       showTishi: false,
-      tishi: '',
-      experienceData: '',
-      imgUrl: ['static/img/2.jpg', 'static/img/3.jpg', 'static/img/4.jpg', 'static/img/5.jpg', 'static/img/6.jpg',]
+      tishi: ''
     }
   },
   store,
   computed: {
-    ...mapState(['isShowUser', 'userName']),
+    ...mapState(['isShowUser', 'userName', 'experienceData']),
   },
   created() {
     this.getExperienceData();
@@ -122,11 +119,11 @@ export default {
     noShowTishi() {
       this.showTishi = false;
     },
-    ShowWriteToggle(){
+    ShowWriteToggle() {
       //toggle btn
-      this.isShowWrite=!this.isShowWrite;
+      this.isShowWrite = !this.isShowWrite;
     },
-    giveStar(eid, index) {
+    ExpGiveStar(eid, index) {
       //点赞
       let data = { 'eid': eid };
       /*接口请求*/
@@ -138,7 +135,8 @@ export default {
         } else if (res.code == 0) {
           console.log("点赞失败，请重试");
         } else if (res.code == 1) {
-          this.experienceData[index].stars = res.stars;
+          //把修改点赞经验数据存到store
+          this.$store.commit('changeExperienceData',[ index, res.stars]);
         }
       })
     },
@@ -187,9 +185,10 @@ export default {
         } else if (res.code == 0) {
           console.log("获取失败，请重试");
         } else if (res.code == 1) {
-          //储存获取的留言数据
-          this.experienceData = res.data.reverse();
-
+          //储存获取的分享经验数据
+          let experienceData = res.data.reverse();
+          //把分享经验数据存到store
+          this.$store.commit('saveExperienceData', experienceData);
         }
       })
     }
@@ -225,7 +224,7 @@ export default {
 }
 
 .glyphicon-user {
-  margin-right: 10px;
+  margin: 10px 5px 0 15px;
   color: #f83;
 }
 
@@ -238,13 +237,18 @@ i.glyphicon-thumbs-up {
     font-weight: bold;
   }
 }
-
+a.content-title{
+  color: #000;
+  &:hover{
+    color:#00AAE7;
+  }
+}
 .star.row {
   margin-bottom: 0;
 }
 
 .text-time {
-  margin:0 5px 0 10px;
+  margin: 0 5px 0 10px;
   color: #bbb;
 }
 

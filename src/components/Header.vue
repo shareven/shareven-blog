@@ -92,7 +92,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isShowUser', 'userName', 'lastPath']),
+    ...mapState(['isShowUser', 'userName']),
   },
   mounted() {
     /*页面挂载获取保存的cookie值，渲染到页面上*/
