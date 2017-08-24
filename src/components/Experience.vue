@@ -51,7 +51,7 @@
               <div class="form-group">
                 <label for="myexp" class="col-sm-2 control-label">content</label>
                 <div class="col-sm-10">
-                  <div contenteditable="true" v-html="text" id="myexp" class="form-control" @focus="noShowTishi" placeholder="内容"></div>
+                  <div contenteditable="true" id="myexp" class="form-control" @focus="noShowTishi" placeholder="内容"></div>
                 </div>
               </div>
               <p class="showTishi text-center" v-show="showTishi">{{tishi}}</p>
@@ -168,7 +168,7 @@ export default {
             this.message = "";
             this.myTitle = "";
             $('#myexp').html("");
-            $("#writeExp").collapse('hide');  //收起分享经验输入框
+            this.ShowWriteToggle();  //收起分享经验输入框
           }
         })
       }
@@ -215,8 +215,10 @@ export default {
 }
 
 #myexp {
-  min-height: 200px;
-  resize: none;
+  height: auto;
+  min-height: 150px;
+  line-height: 20px;
+  outline: none;
 }
 
 .showTishi {

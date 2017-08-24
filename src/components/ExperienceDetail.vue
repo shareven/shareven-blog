@@ -1,30 +1,72 @@
 <template>
   <div class="experienceDetail container">
     <div class="row">
-      <!-- 展示留言 -->
-      <section class="exp-content text-left col-xs-12 col-sm-12 col-md-9">
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <i class="glyphicon glyphicon-user"></i>
-            <strong>{{myExpData.username}}</strong>
-          </div>
-          <div class="panel-body">
-            <div class="content-msg" v-html="myExpData.content"></div>
-            <div class="star row">
-              <span class="text-time">发布于{{myExpData.date}}</span>
-              <span>点赞</span>
-              <i class="glyphicon glyphicon-thumbs-up" @click="ExpGiveStar(myExpData.eid,$route.params.id)"></i>
-              <span>{{myExpData.stars}}</span>
+
+      <section class="main-content text-left col-xs-12 col-sm-12 col-md-9">
+        <div class="row">
+          <!-- 展示经验 start -->
+          <section class="exp-content text-left col-xs-12 col-sm-12">
+            <div class="jumbotron">
+              <h3 class="text-center">{{myExpData.title}}</h3>
+              <div class="row small">
+                <i class="glyphicon glyphicon-user"></i>
+                <strong>{{myExpData.username}}</strong>
+              </div>
+              <div class="panel-body">
+                <div class="content-msg" v-html="myExpData.content"></div>
+                <div class="star row">
+                  <span class="text-time">发布于{{myExpData.date}}</span>
+                  <span>点赞</span>
+                  <i class="glyphicon glyphicon-thumbs-up" @click="ExpGiveStar(myExpData.eid,$route.params.id)"></i>
+                  <span>{{myExpData.stars}}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
+          <!-- 展示经验 end -->
+          <!-- 发表评论 start-->
+          <section class="comment">
+            <header class="header">
+              <div class="row">
+                <a href="javascript:;" @click="ShowWriteToggle" class="btn btn-primary">评论</a>
+              </div>
+            </header>
+            <transition name="myslide">
+              <div id="writeExp" v-show="isShowWrite">
+                <!-- 已经登录后可以分享 -->
+                <div class="container" v-show="isShowUser">
+                  <form class="form-horizontal text-left">
+                    <h3 class="text-center">发表评论</h3>
+                    <div class="form-group">
+                      <div contenteditable="true" id="myComment" class="form-control" @focus="noShowTishi" placeholder="内容"></div>
+                    </div>
+                    <p class="showTishi text-center" v-show="showTishi">{{tishi}}</p>
+                    <div class="form-group text-center">
+                      <input type="button" class="btn btn-success" @click="sendComment" value="提交" />
+                    </div>
+                  </form>
+                </div>
+                <!-- 未登录不可以留言 -->
+                <div class="container" v-show="!isShowUser">
+                  <h2>请先登录</h2>
+                  <section class="row">
+                    <router-link to="/user/login" class="btn btn-success">去登录</router-link>
+                    <router-link to="/user/register" class="btn btn-primary">去注册</router-link>
+                  </section>
+                </div>
+              </div>
+            </transition>
+          </section>
         </div>
+        <!-- 发表评论 end-->
       </section>
 
       <!-- 展示评论 start -->
       <section class="showComments text-left col-xs-12 col-sm-12 col-md-3">
+        <h2 class="text-muted">评论区</h2>
         <transition-group name="myslide2" tag="div">
           <div class="panel panel-default" :key="index" v-for="(item,index) in commentsData">
-            <div class="panel_heading">
+            <div class="panel-heading">
               <i class="glyphicon glyphicon-user"></i>
               <strong>{{item.username}}</strong>
             </div>
@@ -42,40 +84,6 @@
       </section>
       <!-- 展示评论 end -->
 
-      <!-- 发表评论 start-->
-      <section class="comment col-md-12">
-        <header class="header">
-          <div class="row">
-            <a href="javascript:;" @click="ShowWriteToggle" class="btn btn-primary">评论</a>
-          </div>
-        </header>
-        <transition name="myslide">
-          <div id="writeExp" v-show="isShowWrite">
-            <!-- 已经登录后可以分享 -->
-            <div class="container" v-show="isShowUser">
-              <form class="form-horizontal text-left">
-                <h3 class="text-center">发表评论</h3>
-                <div class="form-group">
-                  <div contenteditable="true" v-html="text" id="myComment" class="form-control" @focus="noShowTishi" placeholder="内容"></div>
-                </div>
-                <p class="showTishi text-center" v-show="showTishi">{{tishi}}</p>
-                <div class="form-group text-center">
-                  <input type="button" class="btn btn-success" @click="sendComment" value="提交" />
-                </div>
-              </form>
-            </div>
-            <!-- 未登录不可以留言 -->
-            <div class="container" v-show="!isShowUser">
-              <h2>请先登录</h2>
-              <section class="row">
-                <router-link to="/user/login" class="btn btn-success">去登录</router-link>
-                <router-link to="/user/register" class="btn btn-primary">去注册</router-link>
-              </section>
-            </div>
-          </div>
-        </transition>
-      </section>
-      <!-- 发表评论 end-->
     </div>
   </div>
 </template>
@@ -201,6 +209,7 @@ export default {
 
 #myComment {
   min-height: 200px;
+  height: auto;
   resize: none;
 }
 
@@ -224,7 +233,7 @@ i.glyphicon-thumbs-up {
 }
 
 .star.row {
-  margin-bottom: 0;
+  margin: 10px 0;
 }
 
 .text-time {
