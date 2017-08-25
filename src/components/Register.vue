@@ -100,8 +100,8 @@ export default {
                 this.showTishi = true;
             } else {
                 let data = { 'username': this.newUsername, 'password': this.newPassword }
-                // $.post('/vueapi/register.php', data, (res)=>{
-                $.post('http://localhost/vueapi/register.php', data, (res) => {
+                $.post('/vueapi/register.php', data, (res)=>{
+                // $.post('http://localhost/vueapi/register.php', data, (res) => {
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常"

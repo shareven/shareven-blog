@@ -87,8 +87,8 @@ export default {
       //点赞
       let data = { 'lid': lid };
       /*接口请求*/
-      // $.post('/vueapi/giveStar.php', data, (res) => {
-        $.post('http://localhost/vueapi/giveStar.php', data, (res) => {
+      $.post('/vueapi/giveStar.php', data, (res) => {
+        // $.post('http://localhost/vueapi/giveStar.php', data, (res) => {
         res = JSON.parse(res);
         if (res.code == -2) {
           console.log("网络连接异常");
@@ -113,8 +113,8 @@ export default {
 
         let data = { 'username': this.userName, 'message': message, 'date': mydate };
         /*接口请求*/
-        // $.post('/vueapi/leaveMsg.php', data, (res) => {
-          $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
+        $.post('/vueapi/leaveMsg.php', data, (res) => {
+          // $.post('http://localhost/vueapi/leaveMsg.php', data, (res) => {
           res = JSON.parse(res);
           if (res.code == -2) {
             this.tishi = res.mesg;
@@ -133,8 +133,8 @@ export default {
     },
     getLeaveMsgData() {
       /*接口请求*/
-      // $.get('/vueapi/showLeaveMsg.php', (res) => {
-        $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
+      $.get('/vueapi/showLeaveMsg.php', (res) => {
+        // $.get('http://localhost/vueapi/showLeaveMsg.php', (res) => {
 
         // localhost下不能用JSON.parse转化json数组
         res = JSON.parse(res);

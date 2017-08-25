@@ -1,35 +1,35 @@
 <template>
   <div class="experience">
     <!-- <div class="container">
-                            <div id="banner" class="carousel slide col-md-4 col-md-offset-4" data-ride="carousel">
-                              <ol class="carousel-indicators">
-                                <li data-target="#banner" data-slide-to="1" class="active"></li>
-                                <li data-target="#banner" data-slide-to="2"></li>
-                                <li data-target="#banner" data-slide-to="3"></li>
-                                <li data-target="#banner" data-slide-to="4"></li>
-                                <li data-target="#banner" data-slide-to="5"></li>
-                                <li data-target="#banner" data-slide-to="6"></li>
-                              </ol>
+                                        <div id="banner" class="carousel slide col-md-4 col-md-offset-4" data-ride="carousel">
+                                          <ol class="carousel-indicators">
+                                            <li data-target="#banner" data-slide-to="1" class="active"></li>
+                                            <li data-target="#banner" data-slide-to="2"></li>
+                                            <li data-target="#banner" data-slide-to="3"></li>
+                                            <li data-target="#banner" data-slide-to="4"></li>
+                                            <li data-target="#banner" data-slide-to="5"></li>
+                                            <li data-target="#banner" data-slide-to="6"></li>
+                                          </ol>
 
-                              <div class="carousel-inner" role="listbox">
-                                <div class="item active">
-                                  <img src="static/img/1.jpg" class="img-responsive">
-                                </div>
-                                <div class="item" v-for="(i,index) in imgUrl">
-                                  <img :src="i">
-                                </div>
-                              </div>
+                                          <div class="carousel-inner" role="listbox">
+                                            <div class="item active">
+                                              <img src="static/img/1.jpg" class="img-responsive">
+                                            </div>
+                                            <div class="item" v-for="(i,index) in imgUrl">
+                                              <img :src="i">
+                                            </div>
+                                          </div>
 
-                              <a class="left carousel-control" href="#banner" role="button" data-slide="prev">
-                                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                                <span class="sr-only">Previous</span>
-                              </a>
-                              <a class="right carousel-control" href="#banner" role="button" data-slide="next">
-                                <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                                <span class="sr-only">Next</span>
-                              </a>
-                            </div>
-                          </div> -->
+                                          <a class="left carousel-control" href="#banner" role="button" data-slide="prev">
+                                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                                            <span class="sr-only">Previous</span>
+                                          </a>
+                                          <a class="right carousel-control" href="#banner" role="button" data-slide="next">
+                                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                                            <span class="sr-only">Next</span>
+                                          </a>
+                                        </div>
+                                      </div> -->
 
     <section class="shareExperience">
       <header class="header">
@@ -76,16 +76,20 @@
     <section class="container exp-content text-left">
       <transition-group name="myslide2" tag="div">
         <div class="panel panel-default" :key="index" v-for="(item,index) in experienceData">
-          
           <div class="panel-body">
             <router-link :to="{name:'experienceDetail',params:{id:index}}" class="content-title">{{item.title}}</router-link>
             <div class="star row">
               <i class="glyphicon glyphicon-user"></i>
               <strong>{{item.username}}</strong>
               <span class="text-time">发布于{{item.date}}</span>
-              <span>点赞</span>
-              <i class="glyphicon glyphicon-thumbs-up" @click="ExpGiveStar(item.eid,index)"></i>
-              <span>{{item.stars}}</span>
+              <span class="give-star">
+                <i class="glyphicon glyphicon-thumbs-up" @click="ExpGiveStar(item.eid,index)"></i>
+                <span>{{item.stars}}</span>
+              </span>
+              <span class="give-comments">
+                <i class="glyphicon glyphicon-comment"></i>
+                <span>{{item.commentsnum}}</span>
+              </span>
             </div>
           </div>
         </div>
@@ -110,7 +114,8 @@ export default {
   },
   store,
   computed: {
-    ...mapState(['isShowUser', 'userName', 'experienceData']),
+    ...mapState(['isShowUser', 'userName', 'experienceData', 'commentsData'])
+
   },
   created() {
     this.getExperienceData();
@@ -127,8 +132,8 @@ export default {
       //点赞
       let data = { 'eid': eid };
       /*接口请求*/
-      // $.post('/vueapi/ExpGiveStar.php', data, (res) => {
-      $.post('http://localhost/vueapi/ExpGiveStar.php', data, (res) => {
+      $.post('/vueapi/ExpGiveStar.php', data, (res) => {
+      // $.post('http://localhost/vueapi/ExpGiveStar.php', data, (res) => {
         res = JSON.parse(res);
         if (res.code == -2) {
           console.log("网络连接异常");
@@ -136,7 +141,7 @@ export default {
           console.log("点赞失败，请重试");
         } else if (res.code == 1) {
           //把修改点赞经验数据存到store
-          this.$store.commit('changeExperienceData',[ index, res.stars]);
+          this.$store.commit('changeExperienceData', [index, res.stars]);
         }
       })
     },
@@ -153,8 +158,8 @@ export default {
         let mydate = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + " " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
         let data = { 'username': this.userName, 'title': this.myTitle, 'content': content, 'date': mydate };
         /*接口请求*/
-        // $.post('/vueapi/shareExperience.php', data, (res) => {
-        $.post('http://localhost/vueapi/shareExperience.php', data, (res) => {
+        $.post('/vueapi/shareExperience.php', data, (res) => {
+        // $.post('http://localhost/vueapi/shareExperience.php', data, (res) => {
           res = JSON.parse(res);
           if (res.code == -2) {
             this.tishi = res.mesg;
@@ -175,9 +180,8 @@ export default {
     },
     getExperienceData() {
       /*接口请求*/
-      // $.get('/vueapi/showExperienceData.php', (res) => {
-      $.get('http://localhost/vueapi/showExperienceData.php', (res) => {
-
+      $.get('/vueapi/showExperienceData.php', (res) => {
+      // $.get('http://localhost/vueapi/showExperienceData.php', (res) => {
         // localhost下不能用JSON.parse转化json数组
         // res = JSON.parse(res);
         if (res.code == -2) {
@@ -230,23 +234,24 @@ export default {
   color: #f83;
 }
 
-i.glyphicon-thumbs-up {
-  margin: 0 3px;
-  color: #aaa;
-  cursor: pointer;
-  &:hover {
-    color: #FBCD00;
-    font-weight: bold;
-  }
-}
-a.content-title{
+
+a.content-title {
   color: #000;
-  &:hover{
-    color:#00AAE7;
+  &:hover {
+    color: #00AAE7;
   }
 }
+
 .star.row {
-  margin-bottom: 0;
+  margin: 10px 0;
+  color: #aaa;
+  i.glyphicon-thumbs-up {
+    cursor: pointer;
+    &:hover {
+      color: #FBCD00;
+      font-weight: bold;
+    }
+  }
 }
 
 .text-time {

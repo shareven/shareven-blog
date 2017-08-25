@@ -48,7 +48,7 @@
               </div>
               <button type="submit" class="btn btn-default col-md-2 col-xs-2">搜索</button>
             </form>
-            <ul class="nav navbar-nav navbar-left col-md-2 col-sm-3">
+            <ul class="nav navbar-nav navbar-left col-md-2 col-sm-2">
               <li>
                 <router-link to="/user/leaveMsg">留言</router-link>
               </li>

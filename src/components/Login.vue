@@ -96,8 +96,8 @@ export default {
             } else {
                 let data = { 'username': this.username, 'password': this.password }
                 /*接口请求*/
-                // $.post('/vueapi/login.php', data, (res) => {
-                $.post('http://localhost/vueapi/login.php', data, (res) => {
+                $.post('/vueapi/login.php', data, (res) => {
+                // $.post('http://localhost/vueapi/login.php', data, (res) => {
                     res = JSON.parse(res);
                     if (res.code == -2) {
                         this.tishi = "网络连接异常";
