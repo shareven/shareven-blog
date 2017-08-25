@@ -18,7 +18,7 @@
           <div class="collapse navbar-collapse text-left " id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav col-md-4 col-sm-4">
               <li class="active">
-                <router-link to="/home">首页
+                <router-link to="/">首页
                 </router-link>
                 <span class="sr-only">(current)</span>
               </li>

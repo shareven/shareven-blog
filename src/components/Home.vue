@@ -57,7 +57,7 @@ html {
 .home {
   padding-top: 8rem;
   width: 100%;
-  height: 50rem;
+  height: 52rem;
   font-size: 1rem;
   background: #000;
   perspective: 80rem;
