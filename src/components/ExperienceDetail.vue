@@ -67,7 +67,7 @@
       <section class="showComments text-left col-xs-12 col-sm-12 col-md-3">
         <h2 class="text-muted">评论区</h2>
         <transition-group name="myslide2" tag="div">
-          <div class="panel panel-default" :key="index" v-for="(item,index) in commentsData">
+          <div class="panel panel-default" :key="item.id" v-for="(item,index) in commentsData">
             <div class="panel-heading">
               <i class="glyphicon glyphicon-user"></i>
               <strong>{{item.username}}</strong>

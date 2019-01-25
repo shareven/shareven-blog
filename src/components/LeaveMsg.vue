@@ -16,7 +16,7 @@
                 <div class="div col-xs-12 col-md-12">
                   <div contenteditable="true" v-focus id="lvmsg" class="form-control text-left" @focus="noShowTishi" placeholder="太喜欢你的留言了，快来留下点什么吧"></div>
                 </div>
-              </div class="form-group">
+              </div>
               <div class="form-group">
                 <input type="button" class="btn btn-success " value="发送" @click="sendMsg">
               </div>
@@ -38,7 +38,7 @@
     <!-- 展示留言 -->
     <section class="container content text-left">
       <transition-group name="myslide2" tag="div">
-        <div class="panel panel-default" :key="index" v-for="(item,index) in leavemsgData">
+        <div class="panel panel-default" :key="item.id" v-for="(item,index) in leavemsgData">
           <div class="panel-heading">
             <i class="glyphicon glyphicon-user"></i>
             <strong>{{item.username}}</strong>

@@ -75,7 +75,8 @@
     <!-- 展示分享经验 -->
     <section class="container exp-content text-left">
       <transition-group name="myslide2" tag="div">
-        <div class="panel panel-default" :key="index" v-for="(item,index) in experienceData">
+        <div>
+        <div class="panel panel-default" :key="item.username" v-for="(item,index) in experienceData">
           <div class="panel-body">
             <router-link :to="{name:'experienceDetail',params:{id:index}}" class="content-title">{{item.title}}</router-link>
             <div class="star row">
@@ -92,6 +93,7 @@
               </span>
             </div>
           </div>
+        </div>
         </div>
       </transition-group>
     </section>
